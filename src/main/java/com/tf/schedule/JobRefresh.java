@@ -116,16 +116,29 @@ public class JobRefresh implements SchedulingConfigurer {
     }
 
     // 移除已经删除的任务
-    public void de_duplicate(List<DbEntity> requestList) {
+    public void de_duplicate(List<ScheduleEntity> requestList) {
         Set<String> taskKeyInMap = scheduledFutureMap.keySet();
-
         if (taskKeyInMap.isEmpty()) return;
+//        for (ScheduleEntity entity : requestList) {
+//            if (!taskKeyInMap.contains(entity.getRandomName())) {
+//                scheduledFutureMap.get(entity.getRandomName()).cancel(false);
+//            }
+//        }
+        taskKeyInMap.forEach(key -> {
+            if (!exists(requestList, key)) {
+                scheduledFutureMap.get(key).cancel(false);
 
-        for (DbEntity entity : requestList) {
-            if (!taskKeyInMap.contains(entity.getRandomName())) {
-                scheduledFutureMap.get(entity.getRandomName()).cancel(false);
+            }
+        });
+    }
+    private boolean exists(List<ScheduleEntity> taskList, String taskId) {
+        for (ScheduleEntity eciTask : taskList) {
+            if (eciTask.getRandomName().equals(taskId)) {
+                return true;
             }
         }
+
+        return false;
     }
 
     private void cancelExistingTask(DbEntity request) {
