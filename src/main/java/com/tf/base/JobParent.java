@@ -29,8 +29,9 @@ public abstract class JobParent {
         } catch (Exception ex) {
             this.isComplicated = true;
             throw ex;
+        }finally {
+            this.isComplicated = true;
         }
-        this.isComplicated = true;
     }
 
     public abstract void execute() throws Exception;

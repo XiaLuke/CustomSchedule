@@ -81,34 +81,6 @@ public class JobRefresh implements SchedulingConfigurer {
         }
     }
 
-    /*private void extracted(DbEntity entity, JobParent job) {
-        CronTask cronTask = new CronTask(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    job.executeWithIsComplicated();
-                    // 更新数据库
-                    DbEntity DbEntity = new DbEntity();
-                    DbEntity.setRandomName(job.getRandomName());
-                    DbEntity.setFinalExecuteTime(new Date());
-                    dbMapper.update(DbEntity, new QueryWrapper<DbEntity>().eq("random_name", entity.getRandomName()));
-                } catch (Exception e) {
-                    DbEntity DbEntity = new DbEntity();
-                    DbEntity.setRandomName(job.getRandomName());
-                    DbEntity.setFinalExecuteTime(new Date());
-                    DbEntity.setUsedFlag(0);
-                    dbMapper.update(DbEntity, new QueryWrapper<DbEntity>().eq("random_name", entity.getRandomName()));
-//                                scheduleMapper.updateById(DbEntity);
-//                                System.out.println("执行失败后更新数据库");
-                    throw new RuntimeException(e);
-                }
-            }
-        }, entity.getCron()); // 使用从数据库中查询拿到的cron表达式
-
-        ScheduledFuture<?> scheduledFuture = taskRegistrar.getScheduler().schedule(cronTask.getRunnable(), cronTask.getTrigger());
-        cronTaskMap.put(job.getRandomName(), cronTask);
-        scheduledFutureMap.put(job.getRandomName(), scheduledFuture);
-    }*/
     private void extracted(DbEntity entity, JobParent job) {
         CronTask cronTask = new CronTask(() -> {
             try {
@@ -140,12 +112,8 @@ public class JobRefresh implements SchedulingConfigurer {
                 cronTaskMap.remove(key);
             }
         });
-        /*for (DbEntity entity : requestList) {
-            if (!taskKeyInMap.contains(entity.getRandomName())) {
-                scheduledFutureMap.get(entity.getRandomName()).cancel(false);
-            }
-        }*/
     }
+
     private boolean exists(List<DbEntity> taskList, String taskId) {
         return taskList.stream().anyMatch(task -> task.getRandomName().equals(taskId));
     }
