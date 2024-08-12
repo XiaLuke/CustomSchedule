@@ -1,30 +1,22 @@
 package com.tf.base;
 
 public abstract class JobParent {
-
-    // cron表达式
-    public abstract String getCron();
-
-    // 任务名称
-    public abstract String getJobName();
-
-    public abstract String getRandomName();
     private String logId;
-
     public String getLogId() {
         return logId;
     }
-
     public void setLogId(String logId) {
         this.logId = logId;
     }
 
+
     // 是否完成
     public boolean isComplicated = true;
-
-    public boolean isComplicated() {
-        return isComplicated;
-    }
+    // cron表达式
+    public abstract String getCron();
+    // 任务名称
+    public abstract String getJobName();
+    public abstract String getRandomName();
 
     // 未结束就执行方法
     public void executeWithIsComplicated() throws Exception {

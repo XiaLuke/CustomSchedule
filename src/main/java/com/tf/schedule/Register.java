@@ -33,7 +33,6 @@ public class Register implements ApplicationContextAware {
             String jobName = job.getJobName(); // 获取任务名
             String autoId = job.getRandomName(); // 获取任务Id
             String cron = job.getCron();
-//            String jobCode = CommonUtil.getJobCode(className, jobName, methodName); // 获取任务代码
             jobRegister(className, job); // 注册任务
             try {
                 registerJobTaskToDb(autoId, cron, current_ip, jobName, className, methodName); // 初次启动时将任务插入数据库中
